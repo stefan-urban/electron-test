@@ -27,7 +27,7 @@
     "win": {
       "target": "zip",
       "publish": [
-        "never"
+        "always"
       ]
     }
   }
