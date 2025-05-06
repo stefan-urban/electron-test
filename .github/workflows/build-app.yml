@@ -16,7 +16,11 @@ jobs:
       run: |
         npm install
         npm run dist-linux64
-    - name: Generate pre-release tag (e.g., v0.0.0-20250506-1200)
+        
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Generate pre-release tag
       id: tag
       run: |
         SHORT_SHA=$(git rev-parse --short HEAD)
@@ -26,8 +30,8 @@ jobs:
     - name: Create Alpha Release
       uses: softprops/action-gh-release@v2
       with:
-        tag_name: ${{ steps.vars.outputs.tag_name }}
-        name: Alpha Release ${{ steps.vars.outputs.tag_name }}
+        tag_name: ${{ steps.tag.outputs.tag_name }}
+        name: Alpha Release ${{ steps.tag.outputs.tag_name }}
         prerelease: true
         generate_release_notes: true
         files: dist/*.tar.gz
