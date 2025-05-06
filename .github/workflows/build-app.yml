@@ -46,12 +46,12 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-#    - name: Download all artifacts
-#      uses: actions/download-artifact@v4
-#      with:
-#        path: binaries
-#        pattern: *-binaries
-#        merge-multiple: true
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: binaries
+        pattern: "*-binaries"
+        merge-multiple: true
 #    - run: ls -R binaries
 #    - run: ls -R dist
 #    - name: Generate pre-release tag
