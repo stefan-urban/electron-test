@@ -33,7 +33,7 @@
       "target": ["zip"]
     },
     "linux": {
-      "target": ["deb", "tar.gz"]
+      "target": ["tar.gz"]
     }
   }
 }
