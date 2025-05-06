@@ -52,8 +52,8 @@ jobs:
         path: binaries
         pattern: "*-binaries"
         merge-multiple: true
-#    - run: ls -R binaries
-#    - run: ls -R dist
+    - run: ls -R binaries
+    - run: ls -R dist
 #    - name: Generate pre-release tag
 #      id: tag
 #      run: |
