@@ -30,7 +30,7 @@ jobs:
         name: Alpha Release ${{ steps.vars.outputs.tag_name }}
         prerelease: true
         generate_release_notes: true
-        path: dist/*.tar.gz
+        files: dist/*.tar.gz
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
