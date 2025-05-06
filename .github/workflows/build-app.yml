@@ -1,7 +1,10 @@
 
 name: Build package
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build-linux:
@@ -13,30 +16,47 @@ jobs:
       run: |
         npm install
         npm run dist-linux64
-    - name: Upload .deb
-      uses: actions/upload-artifact@v4
-      with:
-        name: electron-test_amd64.deb
-        path: dist/*.deb
-        compression: 0
-    - name: Upload .tar.gz
-      uses: actions/upload-artifact@v4
-      with:
-        name: electron-test_linux64.tar.gz
-        path: dist/*.tar.gz
-        compression: 0
-
-  build-windows:
-    runs-on: windows-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Build
+    - name: Generate pre-release tag (e.g., v0.0.0-20250506-1200)
+      id: tag
       run: |
-        npm install
-        npm run dist-win64
-    - uses: actions/upload-artifact@v4
+        SHORT_SHA=$(git rev-parse --short HEAD)
+        TAG="v0.0.0-$(date +'%Y%m%d')-${SHORT_SHA}"
+        echo "Generated tag: $TAG"
+        echo "tag_name=$TAG" >> $GITHUB_OUTPUT
+    - name: Create Alpha Release
+      uses: softprops/action-gh-release@v2
       with:
-        name: electron-test_win64.zip
-        path: dist/*-win.zip
-        compression: 0
+        tag_name: ${{ steps.vars.outputs.tag_name }}
+        name: Alpha Release ${{ steps.vars.outputs.tag_name }}
+        prerelease: true
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+#    - name: Upload .deb
+#      uses: actions/upload-artifact@v4
+#      with:
+#        name: electron-test_amd64.deb
+#        path: dist/*.deb
+#        compression-level: 0
+#    - name: Upload .tar.gz
+#      uses: actions/upload-artifact@v4
+#      with:
+#        name: electron-test_linux64.tar.gz
+#        path: dist/*.tar.gz
+#        compression-level: 0
+
+#  build-windows:
+#    runs-on: windows-latest
+#    steps:
+#    - name: Checkout
+#      uses: actions/checkout@v4
+#    - name: Build
+#      run: |
+#        npm install
+#        npm run dist-win64
+#    - uses: actions/upload-artifact@v4
+#      with:
+#        name: electron-test_win64.zip
+#        path: dist/*-win.zip
+#        compression-level: 0
