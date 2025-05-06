@@ -39,13 +39,13 @@ jobs:
         name: windows-binaries
         path: dist/electrontest-win64.zip
 
-#  release:
-#    runs-on: ubuntu-latest
+  release:
+    runs-on: ubuntu-latest
 ##    needs: [build-linux, build-windows]
-#    needs: build-windows
-#    steps:
-#    - name: Checkout code
-#      uses: actions/checkout@v4
+    needs: build-windows
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
 #    - name: Download all artifacts
 #      uses: actions/download-artifact@v4
 #      with:
