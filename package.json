@@ -26,8 +26,12 @@
     "appId": "org.example.electronquickstart",
     "productName": "ElectronQuickstart",
     "win": {
-      "target": "zip"
+      "target": "zip",
+	  "publish": ["github"]
     },
-	"publish": ["github"]
+    "linux": {
+      "target": "zip",
+	  "publish": ["github"]
+    }
   }
 }
