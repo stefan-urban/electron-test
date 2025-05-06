@@ -27,13 +27,13 @@
     "electron-builder": "^26.0.12"
   },
   "build": {
-    "appId": "org.example.electronquickstart",
-    "productName": "ElectronQuickstart",
     "win": {
+      "artifactName": "electrontest-win64.${ext}",
       "target": ["zip"]
     },
     "linux": {
-      "target": ["tar.gz"]
+      "artifactName": "electrontest-linux64.${ext}",
+      "target": ["deb", "tar.gz"]
     }
   }
 }

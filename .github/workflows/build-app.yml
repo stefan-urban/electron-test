@@ -16,11 +16,43 @@ jobs:
       run: |
         npm install
         npm run dist-linux64
-        
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux-binaries
+        path: |
+          dist/electrontest-linux64.deb
+          dist/electrontest-linux64.tar.gz
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Build
+      run: |
+        npm install
+        npm run dist-win64
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-binaries
+        path: dist/electrontest-win64.zip
+
   release:
     runs-on: ubuntu-latest
-    needs: build-linux
+    needs: [build-linux, build-windows]
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: binaries
+        pattern: *-binaries
+        merge-multiple: true
+    - run: ls -R binaries
+    - run: ls -R dist
     - name: Generate pre-release tag
       id: tag
       run: |
@@ -35,7 +67,7 @@ jobs:
         name: Alpha Release ${{ steps.tag.outputs.tag_name }}
         prerelease: true
         generate_release_notes: true
-        files: dist/*.tar.gz
+        files: binaries/*
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
